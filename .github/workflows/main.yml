@@ -11,6 +11,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Checkout submodules
+      uses: srt32/git-actions@v0.0.3
+      with:
+        args: git submodule update --init logo
     - name: build
       run: cd logo && make -f Makefile.bittboy
     - uses: actions/upload-artifact@v2
@@ -25,6 +29,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Checkout submodules
+      uses: srt32/git-actions@v0.0.3
+      with:
+        args: git submodule update --init uboot
     - name: install deps
       run: apt update && apt install -y swig
     - name: build
@@ -41,6 +49,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Checkout submodules
+      uses: srt32/git-actions@v0.0.3
+      with:
+        args: git submodule update --init uboot
     - name: install deps
       run: apt update && apt install -y swig
     - name: build
@@ -49,4 +61,41 @@ jobs:
       with:
         name: uboot-spi-flash
         path: uboot/u-boot-sunxi-with-spl.bin
+
+
+  build-kernel-4bit:
+    runs-on: ubuntu-latest
+    container:
+      image: arcnor/toolchain-bittboy:steward
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Checkout submodules
+      uses: srt32/git-actions@v0.0.3
+      with:
+        args: git submodule update --init kernel
+    - name: build
+      run: cd kernel && make miyoo_defconfig && make zImage
+    - uses: actions/upload-artifact@v2
+      with:
+        name: kernel-4bit
+        path: kernel/zImage
+
+  build-daemon:
+    runs-on: ubuntu-latest
+    container:
+      image: arcnor/toolchain-bittboy:steward
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Checkout submodules
+      uses: srt32/git-actions@v0.0.3
+      with:
+        args: git submodule update --init daemon
+    - name: build
+      run: cd daemon && make
+    - uses: actions/upload-artifact@v2
+      with:
+        name: daemon
+        path: daemon/daemon
 
