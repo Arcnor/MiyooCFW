@@ -14,7 +14,7 @@ jobs:
     - name: Checkout submodules
       uses: srt32/git-actions@v0.0.3
       with:
-        args: git submodule update --init logo
+        args: cd /github/workspace && git submodule update --init logo
     - name: build
       run: cd logo && make -f Makefile.bittboy
     - uses: actions/upload-artifact@v2
@@ -32,7 +32,7 @@ jobs:
     - name: Checkout submodules
       uses: srt32/git-actions@v0.0.3
       with:
-        args: git submodule update --init uboot
+        args: cd /github/workspace && git submodule update --init uboot
     - name: install deps
       run: apt update && apt install -y swig
     - name: build
@@ -52,7 +52,7 @@ jobs:
     - name: Checkout submodules
       uses: srt32/git-actions@v0.0.3
       with:
-        args: git submodule update --init uboot
+        args: cd /github/workspace && git submodule update --init uboot
     - name: install deps
       run: apt update && apt install -y swig
     - name: build
@@ -73,7 +73,7 @@ jobs:
     - name: Checkout submodules
       uses: srt32/git-actions@v0.0.3
       with:
-        args: git submodule update --init kernel
+        args: cd /github/workspace && git submodule update --init kernel
     - name: build
       run: cd kernel && make miyoo_defconfig && make zImage
     - uses: actions/upload-artifact@v2
@@ -91,7 +91,7 @@ jobs:
     - name: Checkout submodules
       uses: srt32/git-actions@v0.0.3
       with:
-        args: git submodule update --init daemon
+        args: cd /github/workspace && git submodule update --init daemon
     - name: build
       run: cd daemon && make
     - uses: actions/upload-artifact@v2
