@@ -3,6 +3,7 @@ name: MiyooFW
 on: [push, pull_request]
 
 # TODO: Use composites?
+# TODO: Don't checkout all modules all the time?
 jobs:
   build-logo:
     runs-on: ubuntu-latest
@@ -11,10 +12,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Checkout submodules
-      uses: srt32/git-actions@v0.0.3
       with:
-        args: cd /github/workspace && git submodule update --init logo
+        submodules: 'true'
     - name: build
       run: cd logo && make -f Makefile.bittboy
     - uses: actions/upload-artifact@v2
@@ -29,10 +28,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Checkout submodules
-      uses: srt32/git-actions@v0.0.3
       with:
-        args: cd /github/workspace && git submodule update --init uboot
+        submodules: 'true'
     - name: install deps
       run: apt update && apt install -y swig
     - name: build
@@ -49,10 +46,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Checkout submodules
-      uses: srt32/git-actions@v0.0.3
       with:
-        args: cd /github/workspace && git submodule update --init uboot
+        submodules: 'true'
     - name: install deps
       run: apt update && apt install -y swig
     - name: build
@@ -70,10 +65,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Checkout submodules
-      uses: srt32/git-actions@v0.0.3
       with:
-        args: cd /github/workspace && git submodule update --init kernel
+        submodules: 'true'
     - name: build
       run: cd kernel && make miyoo_defconfig && make zImage
     - uses: actions/upload-artifact@v2
@@ -88,10 +81,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Checkout submodules
-      uses: srt32/git-actions@v0.0.3
       with:
-        args: cd /github/workspace && git submodule update --init daemon
+        submodules: 'true'
     - name: build
       run: cd daemon && make
     - uses: actions/upload-artifact@v2
