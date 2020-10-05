@@ -1,0 +1,52 @@
+name: MiyooFW
+
+on: [push, pull_request]
+
+# TODO: Use composites?
+jobs:
+  build-logo:
+    runs-on: ubuntu-latest
+    container:
+      image: arcnor/toolchain-bittboy:steward
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: build
+      run: cd logo && make -f Makefile.bittboy
+    - uses: actions/upload-artifact@v2
+      with:
+        name: artifacts-bittboy-bittboy_logo
+        path: boot-logo
+
+  build-uboot-spi:
+    runs-on: ubuntu-latest
+    container:
+      image: arcnor/toolchain-bittboy:steward
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: install deps
+      run: apt update && apt install -y swig
+    - name: build
+      run: cd uboot && make licheepi_nano_spiflash_defconfig && make
+    - uses: actions/upload-artifact@v2
+      with:
+        name: uboot-spi-flash
+        path: uboot/u-boot-sunxi-with-spl.bin
+
+  build-uboot-sd:
+    runs-on: ubuntu-latest
+    container:
+      image: arcnor/toolchain-bittboy:steward
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: install deps
+      run: apt update && apt install -y swig
+    - name: build
+      run: cd uboot && make licheepi_nano_defconfig && make
+    - uses: actions/upload-artifact@v2
+      with:
+        name: uboot-spi-flash
+        path: uboot/u-boot-sunxi-with-spl.bin
+
