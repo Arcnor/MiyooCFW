@@ -54,9 +54,8 @@ jobs:
       run: cd uboot && make licheepi_nano_defconfig && make
     - uses: actions/upload-artifact@v2
       with:
-        name: uboot-spi-flash
+        name: uboot-sd
         path: uboot/u-boot-sunxi-with-spl.bin
-
 
   build-kernel-4bit:
     runs-on: ubuntu-latest
@@ -72,7 +71,7 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: kernel-4bit
-        path: kernel/zImage
+        path: kernel/arch/arm/boot/zImage
 
   build-daemon:
     runs-on: ubuntu-latest
@@ -89,4 +88,20 @@ jobs:
       with:
         name: daemon
         path: daemon/daemon
+
+  build-gmenunx:
+    runs-on: ubuntu-latest
+    container:
+      image: arcnor/toolchain-bittboy:steward
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: 'true'
+    - name: build
+      run: cd gmenunx && make -f Makefile.miyoo
+    - uses: actions/upload-artifact@v2
+      with:
+        name: gmenunx
+        path: gmenunx/objs/miyoo
 
