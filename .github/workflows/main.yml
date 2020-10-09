@@ -105,3 +105,19 @@ jobs:
         name: gmenunx
         path: gmenunx/objs/miyoo
 
+  build-buildroot:
+    runs-on: ubuntu-latest
+    container:
+      image: arcnor/retro-toolchains-buildroot
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: 'true'
+    - name: build
+      run: cd buildroot && BR2_JLEVEL=0 make sdk
+    - uses: actions/upload-artifact@v2
+      with:
+        name: buildroot
+        path: buildroot/images/*
+
