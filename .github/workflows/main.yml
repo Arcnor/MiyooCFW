@@ -113,6 +113,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
+        path: "buildroot"
         submodules: 'true'
     - name: build
       run: cd buildroot && BR2_JLEVEL=0 make sdk
